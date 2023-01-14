@@ -1,0 +1,50 @@
+name: Continuous Intergresion and Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+      runs-on: ubuntu-latest
+      container: mcr.microsoft.com/dotnet/sdk:7.0
+      steps:
+        - run: dotnet --version
+          name: Check .NET --version
+
+        - name: Check out code
+          uses: actions/checkout@v2
+
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v3
+          with:
+           dotnet-version: 7.0.x
+
+        - name: Restore dependencies
+          run: dotnet restore
+
+        - name: Build app
+          run: dotnet build -c Release --no-restore
+
+        - name: run automated tests 
+          run: dotnet test -c Release --no-build
+
+        - name: run automated tests with build
+          run: dotnet test -c Release 
+
+#        - name: Test Report             #https://github.com/marketplace/actions/test-reporter
+#          uses: dorny/test-reporter@v1
+ #         if: success() || failure()    # run this step even if previous step failed
+ #         with:
+ #           name: JEST Tests            # Name of the check run which will be created
+ #           path: reports/jest-*.xml    # Path to test results
+  #          reporter: jest-junit        # Format of test results
+        - name: Azure Pipelines Action
+          uses: Azure/pipelines@v1
+          with:
+              azure-devops-project-url: 'https://dev.azure.com/tany15825/Learning-github-connection'
+              azure-pipeline-name: 'NatyJam.pipelines-dotnet-core-Test' # name of the Azure pipeline to be triggered
+              azure-devops-token: '${{ secrets.AZURE_DEVOPS_TOKEN }}'
+#              azure-pipeline-variables:  '{"variable1": "value1", "variable2": "value2"}' # optional stringified json
+
