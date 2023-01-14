@@ -43,7 +43,7 @@ jobs:
         - name: Azure Pipelines Action
           uses: Azure/pipelines@v1
           with:
-              azure-devops-project-url: 'https://dev.azure.com/tany15825/Learning-github-connection'
+              azure-devops-project-url: https://dev.azure.com/tany15825/Learning-github-connection
               azure-pipeline-name: 'NatyJam.pipelines-dotnet-core-Test' # name of the Azure pipeline to be triggered
               azure-devops-token: '${{ secrets.AZURE_DEVOPS_TOKEN }}'
 #              azure-pipeline-variables:  '{"variable1": "value1", "variable2": "value2"}' # optional stringified json
